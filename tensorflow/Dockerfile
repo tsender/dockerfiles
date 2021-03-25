@@ -29,4 +29,4 @@ RUN apt-get update && apt-get install -y sudo wget git nano htop graphviz tzdata
     -D OPENCV_GENERATE_PKGCONFIG=ON \
     -D OPENCV_EXTRA_MODULES_PATH=/home/opencv_build/opencv_contrib/modules \
     -D BUILD_EXAMPLES=ON .. \
-    && make -j8 && make install
+    && make -j12 && make install

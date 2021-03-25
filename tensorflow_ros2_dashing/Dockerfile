@@ -1,4 +1,4 @@
-FROM tsender/tensorflow:latest-gpu
+FROM tsender/tensorflow:latest
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG ROS1_DISTRO=melodic
@@ -10,6 +10,7 @@ RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main"
     # ROS1 install
     apt-get update && apt-get install -y htop \
     ros-${ROS1_DISTRO}-desktop-full \
+    ros-${ROS1_DISTRO}-rosbridge-server \
     python-rosdep python-rosinstall python-rosinstall-generator python-wstool build-essential python-catkin-tools
 
 # ROS2 install
