@@ -10,6 +10,9 @@ RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main"
     # ROS1 install
     apt-get update && apt-get install -y htop \
     ros-${ROS1_DISTRO}-desktop-full \
+    ros-${ROS1_DISTRO}-rosauth \
+    python-backports-abc python-backports.ssl-match-hostname python-bson python-bson-ext \
+    python-configparser python-future python-singledispatch python-tornado \
     python-rosdep python-rosinstall python-rosinstall-generator python-wstool build-essential python-catkin-tools && \
     rm -rf /var/lib/apt/lists/*
 
