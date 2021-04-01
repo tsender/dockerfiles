@@ -1,4 +1,4 @@
-FROM tsender/tensorflow:latest
+FROM tsender/tensorflow:gpu
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG ROS1_DISTRO=melodic
@@ -10,8 +10,8 @@ RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main"
     # ROS1 install
     apt-get update && apt-get install -y htop \
     ros-${ROS1_DISTRO}-desktop-full \
-    ros-${ROS1_DISTRO}-rosbridge-server \
-    python-rosdep python-rosinstall python-rosinstall-generator python-wstool build-essential python-catkin-tools
+    python-rosdep python-rosinstall python-rosinstall-generator python-wstool build-essential python-catkin-tools && \
+    rm -rf /var/lib/apt/lists/*
 
 # ROS2 install
 RUN apt-get update && apt install -y curl gnupg2 lsb-release && \
@@ -19,7 +19,8 @@ RUN apt-get update && apt install -y curl gnupg2 lsb-release && \
     sh -c 'echo "deb [arch=$(dpkg --print-architecture)] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" > /etc/apt/sources.list.d/ros2-latest.list' && \
     # ROS2 Dashing install
     apt-get update && sudo apt install -y \
-    ros-${ROS2_DISTRO}-desktop ros-${ROS2_DISTRO}-ros1-bridge ros-${ROS2_DISTRO}-launch* \
+    ros-${ROS2_DISTRO}-desktop \
+    ros-${ROS2_DISTRO}-launch* \
     build-essential \
     cmake \
     git \
@@ -54,4 +55,5 @@ RUN apt-get update && apt install -y curl gnupg2 lsb-release && \
     apt install --no-install-recommends -y \
     libcunit1-dev && \
     # Rosdep
-    rosdep init && rosdep update
+    rosdep init && rosdep update && \
+    rm -rf /var/lib/apt/lists/*
