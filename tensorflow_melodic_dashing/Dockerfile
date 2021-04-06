@@ -49,7 +49,9 @@ RUN apt-get update && apt install -y curl gnupg2 lsb-release && \
     pytest \
     pytest-cov \
     pytest-runner \
-    setuptools && \
+    setuptools \
+    # Rotations stuff
+    transforms3d && \ 
     # install Fast-RTPS dependencies
     apt-get install --no-install-recommends -y \
     libasio-dev \
