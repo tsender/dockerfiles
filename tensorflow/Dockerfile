@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y sudo wget git nano htop graphviz tzdata
     && apt-get install -y python3-matplotlib python3-sklearn python3-sklearn-lib python3-pandas \
     && pip3 install matplotlib --upgrade \
     && pip3 install pydot \
+    && pip3 install gym \
     #
     # OpenCV dependencies
     && apt-get install -y build-essential cmake pkg-config libgtk-3-dev \
