@@ -20,19 +20,20 @@ RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main"
 RUN apt-get update && apt install -y curl gnupg2 lsb-release && \
     curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add - && \
     sh -c 'echo "deb [arch=$(dpkg --print-architecture)] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" > /etc/apt/sources.list.d/ros2-latest.list' && \
-    # ROS2 Dashing install
+    # ROS2 install
     apt-get update && sudo apt install -y \
     ros-${ROS2_DISTRO}-desktop \
     ros-${ROS2_DISTRO}-launch* \
     build-essential \
     cmake \
     git \
+    rsync \
     python3-colcon-common-extensions \
     python3-pip \
     python-rosdep \
     python3-vcstool \
     wget && \
-    # install some pip packages needed for testing
+    # Install some pip packages needed for testing
     python3 -m pip install -U \
     argcomplete \
     flake8 \
@@ -50,8 +51,10 @@ RUN apt-get update && apt install -y curl gnupg2 lsb-release && \
     pytest-cov \
     pytest-runner \
     setuptools \
-    # Rotations stuff
-    transforms3d && \ 
+    # Pip3: Adiditional packages
+    transforms3d \
+    pymongo \
+    tornado && \ 
     # install Fast-RTPS dependencies
     apt-get install --no-install-recommends -y \
     libasio-dev \
