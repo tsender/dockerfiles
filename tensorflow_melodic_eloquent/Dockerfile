@@ -1,3 +1,5 @@
+# To remove <none> images: docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
+
 FROM tsender/tensorflow:gpu
 
 ARG DEBIAN_FRONTEND=noninteractive
