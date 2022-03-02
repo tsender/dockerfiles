@@ -2,7 +2,7 @@ FROM tensorflow/tensorflow:latest-gpu
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get install -y sudo wget git nano htop graphviz tzdata \
+RUN apt-get update && apt-get install -y sudo wget git rsync nano htop graphviz tzdata \
     #
     # Python 3 libraries
     && python3 -m pip install --upgrade pip \
