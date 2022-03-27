@@ -53,17 +53,18 @@ RUN apt-get update && apt install -y curl gnupg2 lsb-release && \
     pytest-cov \
     pytest-runner \
     setuptools \
-    # Pip3: Adiditional packages
+    # Adiditional packages
     transforms3d \
     pymongo \
     tornado && \ 
-    # install Fast-RTPS dependencies
-    apt-get install --no-install-recommends -y \
-    libasio-dev \
-    libtinyxml2-dev && \
-    # install Cyclone DDS dependencies
+    # Install Fast-RTPS dependencies
     apt install --no-install-recommends -y \
-    libcunit1-dev && \
+    libasio-dev \
+    libtinyxml2-dev \
+    # Install Cyclone DDS dependencies
+    libcunit1-dev \
+    # Install ffmpeg and related libraries
+    ffmpeg x264 libx264-dev && \
     # Rosdep
-    rosdep init && rosdep update && \
+    rosdep init && rosdep update  && \
     rm -rf /var/lib/apt/lists/*

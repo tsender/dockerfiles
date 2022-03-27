@@ -3,16 +3,13 @@ FROM tensorflow/tensorflow:latest-gpu
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt update && apt install -y sudo wget git rsync nano curl htop lsb-release graphviz tzdata \
-    #
     # Python 3 libraries
     && python3 -m pip install --upgrade pip \
     && apt-get install -y python3-matplotlib python3-sklearn python3-sklearn-lib python3-pandas \
-    && pip3 install matplotlib --upgrade \
-    && pip3 install pydot \
-    && pip3 install gym \
-    #
+    # && pip3 install matplotlib --upgrade \
+    && python3 -m pip install -U matplotlib pydot gym \
     # OpenCV and dependencies
-    && apt install -y libopencv-dev python3-opencv \
+    && apt install -y libopencv-dev python3-opencv ffmpeg x264 libx264-dev \
     build-essential cmake pkg-config libgtk-3-dev \
     libavcodec-dev libavformat-dev libswscale-dev libv4l-dev \
     libxvidcore-dev libx264-dev libjpeg-dev libpng-dev libtiff-dev \
