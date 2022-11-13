@@ -1,4 +1,5 @@
 # To remove <none> images: docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
+# Run "docker build -t <tag_name> --rm ." to remove intermediate images
 
 FROM tsender/tensorflow:gpu
 
@@ -7,7 +8,9 @@ ARG ROS1_DISTRO=melodic
 ARG ROS2_DISTRO=eloquent
 
 # ROS1 install
-RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list' && \
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC && \
+    apt update && apt upgrade -y && \
+    sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list' && \
     apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654  && \
     # ROS1 install
     apt-get update && apt-get install -y htop \
@@ -53,9 +56,10 @@ RUN apt-get update && apt install -y curl gnupg2 lsb-release && \
     pytest-cov \
     pytest-runner \
     setuptools \
-    # Adiditional packages
+    # Additional packages
     transforms3d \
     pymongo \
+    # bson \
     tornado && \ 
     # Install Fast-RTPS dependencies
     apt install --no-install-recommends -y \
@@ -67,4 +71,15 @@ RUN apt-get update && apt install -y curl gnupg2 lsb-release && \
     ffmpeg x264 libx264-dev && \
     # Rosdep
     rosdep init && rosdep update  && \
+    rm -rf /var/lib/apt/lists/*
+
+# Upgrade Ubuntu 18.04 packages and install IPOPT and other useful libraries
+# RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC && \
+#     apt update && apt upgrade -y && \
+RUN apt update && apt install -y pkg-config cython libeigen3-dev cppad coinor-libipopt1v5 coinor-libipopt-dev && \
+    # Install cyipopt
+    python3 -m pip install -U ipopt && \
+    # Install IFOPT
+    cd ~ && git clone https://github.com/ethz-adrl/ifopt.git && cd ifopt && \
+    mkdir build && cd build && cmake .. && make && make install && \
     rm -rf /var/lib/apt/lists/*
