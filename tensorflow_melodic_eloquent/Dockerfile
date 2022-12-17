@@ -1,5 +1,5 @@
 # To remove <none> images: docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
-# Run "docker build -t <tag_name> --rm ." to remove intermediate images
+# Run "docker build --no-cache -t <tag_name> ." to build image
 
 FROM tsender/tensorflow:gpu
 
@@ -59,7 +59,6 @@ RUN apt-get update && apt install -y curl gnupg2 lsb-release && \
     # Additional packages
     transforms3d \
     pymongo \
-    # bson \
     tornado && \ 
     # Install Fast-RTPS dependencies
     apt install --no-install-recommends -y \
