@@ -23,7 +23,11 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC &&
     python3-pip \
     python3-rosdep \
     python3-vcstool \
-    wget && \
+    wget \
+    iputils-ping \
+    htop \
+    nano \
+    vim && \
     # Install some pip packages needed for testing
     python3 -m pip install -U \
     argcomplete \
@@ -42,10 +46,14 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC &&
     pytest-cov \
     pytest-runner \
     setuptools \
-    # Adiditional packages
+    # Adiditional python packages
     transforms3d \
     pymongo \
-    tornado && \ 
+    tornado \
+    paramiko \
+    pyopenssl \
+    torch==1.12.1 \
+    torchvision && \ 
     # Install Fast-RTPS dependencies
     apt-get install --no-install-recommends -y \
     libasio-dev \
