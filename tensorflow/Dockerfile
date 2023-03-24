@@ -2,19 +2,25 @@ FROM tensorflow/tensorflow:latest-gpu
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-RUN apt update && apt install -y sudo wget git rsync nano curl htop lsb-release graphviz tzdata \
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC && \
+    apt update && \
+    # Hold out from upgrading libcudnn8 to version 8.8
+    apt-mark hold libcudnn8 && \
+    apt upgrade -y && apt install -y curl gnupg2 lsb-release && \
+    apt update && apt install -y sudo wget git rsync build-essential cmake nano curl htop iputils-ping lsb-release graphviz tzdata && \
     # Python 3 libraries
-    && python3 -m pip install --upgrade pip \
-    && apt-get install -y python3-matplotlib python3-sklearn python3-sklearn-lib python3-pandas \
-    # && pip3 install matplotlib --upgrade \
-    && python3 -m pip install -U matplotlib pydot gym \
+    python3 -m pip install --upgrade pip && \
+    apt-get install -y python3-matplotlib python3-sklearn python3-sklearn-lib python3-pandas && \
+    python3 -m pip install -U matplotlib pydot gym && \
     # OpenCV and dependencies
-    && apt install -y libopencv-dev python3-opencv ffmpeg x264 libx264-dev \
+    apt install -y libopencv-dev python3-opencv ffmpeg x264 libx264-dev \
     build-essential cmake pkg-config libgtk-3-dev \
     libavcodec-dev libavformat-dev libswscale-dev libv4l-dev \
     libxvidcore-dev libx264-dev libjpeg-dev libpng-dev libtiff-dev \
     gfortran openexr libatlas-base-dev \
-    libtbb2 libtbb-dev libdc1394-22-dev
+    libtbb2 libtbb-dev libdc1394-22-dev && \
+    # Clean apt lists
+    rm -rf /var/lib/apt/lists/*
     #
     # Install OpenCV from source (needed still?)
     # && mkdir /home/opencv_build && cd /home/opencv_build \

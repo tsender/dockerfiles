@@ -6,15 +6,18 @@ FROM tsender/tensorflow:gpu-focal
 ARG DEBIAN_FRONTEND=noninteractive
 ARG ROS2_DISTRO=foxy
 
-# ROS2 install
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC && \
-    apt update && apt upgrade -y && apt install -y curl gnupg2 lsb-release && \
+    apt update && \
+    # Hold out from upgrading libcudnn8 to version 8.8
+    apt-mark hold libcudnn8 && \
+    apt upgrade -y && apt install -y curl gnupg2 lsb-release && \
+    # ROS2 install
     curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add - && \
     sh -c 'echo "deb [arch=$(dpkg --print-architecture)] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" > /etc/apt/sources.list.d/ros2-latest.list' && \
-    # ROS2 install
     apt-get update && sudo apt install -y \
     ros-${ROS2_DISTRO}-desktop \
     ros-${ROS2_DISTRO}-launch* \
+    ros-dev-tools \
     build-essential \
     cmake \
     git \
@@ -26,8 +29,7 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC &&
     wget \
     iputils-ping \
     htop \
-    nano \
-    vim && \
+    nano && \
     # Install some pip packages needed for testing
     python3 -m pip install -U \
     argcomplete \
@@ -46,28 +48,28 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC &&
     pytest-cov \
     pytest-runner \
     setuptools \
-    # Adiditional python packages
+    # Adiditional useful pip packages
     transforms3d \
     pymongo \
     tornado \
     paramiko \
-    pyopenssl \
-    torch==1.12.1 \
-    torchvision && \ 
+    pyopenssl && \
+    # torch==1.12.1 \
+    # torchvision && \ 
     # Install Fast-RTPS dependencies
     apt-get install --no-install-recommends -y \
     libasio-dev \
     libtinyxml2-dev && \
     # Install Cyclone DDS dependencies
     apt install --no-install-recommends -y \
+    ros-${ROS2_DISTRO}-rmw-cyclonedds-cpp \
     libcunit1-dev \
     # Install ffmpeg and related libraries
     ffmpeg x264 libx264-dev && \
     # Rosdep
     rosdep init && rosdep update && \
-    rm -rf /var/lib/apt/lists/*
-
-RUN apt update && apt install -y pkg-config cython libeigen3-dev cppad coinor-libipopt1v5 coinor-libipopt-dev && \
+    # Install eigen, cppad, and ipopt dependencies
+    apt update && apt install -y pkg-config cython libeigen3-dev cppad coinor-libipopt1v5 coinor-libipopt-dev && \
     # Install cyipopt
     python3 -m pip install -U ipopt && \
     # Install IFOPT
