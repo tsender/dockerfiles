@@ -1,2 +1,2 @@
 #! \usr/bin/sh
-docker rmi $(docker images -f "dangling=true" -q)
+docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
