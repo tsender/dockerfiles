@@ -26,11 +26,14 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC &&
     python3-pip \
     python3-rosdep \
     python3-vcstool \
+    python3-testresources \
     wget \
+    libssh-dev \
     iputils-ping \
     htop \
     nano && \
     # Install some pip packages needed for testing
+    python3 -m pip install --upgrade pip && \
     python3 -m pip install -U \
     argcomplete \
     flake8 \
@@ -53,9 +56,9 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC &&
     pymongo \
     tornado \
     paramiko \
-    pyopenssl && \
-    # torch==1.12.1 \
-    # torchvision && \ 
+    pyopenssl \
+    torch==1.12.1 \
+    torchvision && \ 
     # Install Fast-RTPS dependencies
     apt-get install --no-install-recommends -y \
     libasio-dev \
@@ -75,4 +78,7 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC &&
     # Install IFOPT
     cd ~ && git clone https://github.com/ethz-adrl/ifopt.git && cd ifopt && \
     mkdir build && cd build && cmake .. && make && make install && \
+    # Install date library
+    cd ~ && git clone https://github.com/HowardHinnant/date.git && cd date && \
+    mkdir build && cd build && cmake -DENABLE_DATE_TESTING=ON -DBUILD_TZ_LIB=ON .. && make -j4 && make install && \
     rm -rf /var/lib/apt/lists/*
