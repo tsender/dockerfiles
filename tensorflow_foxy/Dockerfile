@@ -51,7 +51,7 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC &&
     pytest-cov \
     pytest-runner \
     setuptools \
-    # Adiditional useful pip packages
+    # Addiitional useful pip packages
     transforms3d \
     pymongo \
     tornado \
