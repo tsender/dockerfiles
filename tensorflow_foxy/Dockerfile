@@ -57,6 +57,8 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC &&
     tornado \
     paramiko \
     pyopenssl \
+    pandas \
+    numexpr \
     torch==1.12.1 \
     torchvision && \ 
     # Install Fast-RTPS dependencies
