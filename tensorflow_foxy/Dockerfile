@@ -1,5 +1,5 @@
 # To remove <none> images: docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
-# Run "docker build --no-cache -t <tag_name> ." to build image
+# Run "docker build --no-cache -t <tag_name> ." to build image, tsender/tensorflow:gpu-focal-foxy
 
 FROM tsender/tensorflow:gpu-focal
 
@@ -31,7 +31,8 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC &&
     libssh-dev \
     iputils-ping \
     htop \
-    nano && \
+    nano \
+    openjdk-11-jdk && \
     # Install some pip packages needed for testing
     python3 -m pip install --upgrade pip && \
     python3 -m pip install -U \
@@ -51,6 +52,7 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC &&
     pytest-cov \
     pytest-runner \
     setuptools \
+    packaging \
     # Addiitional useful pip packages
     transforms3d \
     pymongo \
