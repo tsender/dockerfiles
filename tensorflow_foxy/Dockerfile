@@ -32,7 +32,7 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC &&
     iputils-ping \
     htop \
     nano \
-    openjdk-11-jdk && \
+    openjdk-17-jdk && \
     # Install some pip packages needed for testing
     python3 -m pip install --upgrade pip && \
     python3 -m pip install -U \
