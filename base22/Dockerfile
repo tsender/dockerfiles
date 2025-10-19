@@ -2,7 +2,7 @@
 # Run "docker build --no-cache -t <tag_name> ." to build image
 
 FROM ubuntu:22.04
-
+# nvidia/cuda:12.3.0-devel-ubuntu22.04
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Main apt-get libraries
@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y \
     python3-sklearn \
     python3-sklearn-lib \
     python3-pandas \
+    python3-scipy \
     cython3 \
     libeigen3-dev \
     cppad \
@@ -40,16 +41,18 @@ RUN wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86
 
 ENV CUDA_HOME=/usr/local/cuda-12.3
 ENV PATH=$CUDA_HOME/bin:$PATH
-ENV LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
+# ENV LD_LIBRARY_PATH=$CUDA_HOME/targets/x86_64-linux/lib:$CUDA_HOME/lib64:$LD_LIBRARY_PATH
+ENV LD_LIBRARY_PATH=$CUDA_HOME/targets/x86_64-linux/lib:$CUDA_HOME/lib64:/usr/local/nvidia/lib:/usr/local/nvidia/lib64
 ENV CMAKE_CUDA_COMPILER=$CUDA_HOME/bin/nvcc
 
 # TODO ?
 # cuDNN (installs 8.9.7.29-1+cuda12.2), might be automatically installed by Tensorflow?
-# apt update && apt install -y libcudnn8 libcudnn8-dev libcudnn8-samples && \
+RUN apt-get update && apt-get install -y libcudnn8 libcudnn8-dev libcudnn8-samples \
+    && rm -rf /var/lib/apt/lists/*
 
 # Tensorflow
 RUN python3 -m pip install --upgrade pip && \
-    python3 -m pip install tensorflow[and-cuda]==2.17.0
+    python3 -m pip install tensorflow[and-cuda]==2.16.1
 
 # Remaining python 3 libraries
 RUN python3 -m pip install --upgrade pip && \
@@ -73,24 +76,24 @@ RUN python3 -m pip install --upgrade pip && \
     pytest-runner \
     setuptools \
     packaging \
-    numpy==1.25.0 \
-    matplotlib \
+    numpy==1.24.4 \
     transforms3d \
     pymongo \
     tornado \
     paramiko \
     pyopenssl \
-    pandas \
     numexpr \
     torch==1.12.1 \
-    torchvision \
-    ipopt
+    torchvision
+    # ipyopt \
+    # ipopt
 
 # IFOPT and date libraries
-RUN cd ~ && git clone https://github.com/ethz-adrl/ifopt.git && cd ifopt && \
-    mkdir build && cd build && cmake .. && make && make install && \
-    # Install date library
-    cd ~ && git clone https://github.com/HowardHinnant/date.git && cd date && \
+# RUN cd ~ && git clone https://github.com/ethz-adrl/ifopt.git && cd ifopt && \
+#     mkdir build && cd build && cmake .. && make && make install && \
+
+# Install date library
+RUN cd ~ && git clone https://github.com/HowardHinnant/date.git && cd date && \
     mkdir build && cd build && cmake -DENABLE_DATE_TESTING=ON -DBUILD_TZ_LIB=ON .. && make -j4 && make install
 
 # OpenCV and dependencies
