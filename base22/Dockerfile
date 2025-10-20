@@ -125,6 +125,12 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
     libavahi-client-dev libavahi-common-dev \
     && rm -rf /var/lib/apt/lists/*
 
+# FastDDS 2.6 and FastDDSGen 2.1.3 (takes about 15 min to build)
+# Downloads page for all products: https://www.eprosima.com/index.php?option=com_ars&view=categories&layout=normal
+# Downloads page for Fast DDS: https://www.eprosima.com/component/ars/releases/eprosima-fast-dds
+RUN cd ~ && mkdir eProsima && cd eProsima && wget https://www.eprosima.com/component/ars/item/eprosima_fast-dds-v2-6-linux-tgz && \
+    tar -xzvf eprosima_fast-dds-v2-6-linux-tgz && ./install.sh
+
 ##############################
 # Create group
 ##############################
