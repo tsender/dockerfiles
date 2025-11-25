@@ -45,7 +45,6 @@ ENV PATH=$CUDA_HOME/bin:$PATH
 ENV LD_LIBRARY_PATH=$CUDA_HOME/targets/x86_64-linux/lib:$CUDA_HOME/lib64:/usr/local/nvidia/lib:/usr/local/nvidia/lib64
 ENV CMAKE_CUDA_COMPILER=$CUDA_HOME/bin/nvcc
 
-# TODO ?
 # cuDNN (installs 8.9.7.29-1+cuda12.2), might be automatically installed by Tensorflow?
 RUN apt-get update && apt-get install -y libcudnn8 libcudnn8-dev libcudnn8-samples \
     && rm -rf /var/lib/apt/lists/*
@@ -118,6 +117,7 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
     ros-humble-iceoryx-posh \
     ros-humble-iceoryx-introspection \
     ros-humble-vision-msgs \
+    ros-humble-test-msgs \
     python3-colcon-common-extensions \
     python3-rosdep \
     python3-vcstool \
@@ -125,11 +125,11 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
     libavahi-client-dev libavahi-common-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# FastDDS 2.6 and FastDDSGen 2.1.3 (takes about 15 min to build)
+# FastDDS 2.6 and FastDDSGen 2.1.3
 # Downloads page for all products: https://www.eprosima.com/index.php?option=com_ars&view=categories&layout=normal
 # Downloads page for Fast DDS: https://www.eprosima.com/component/ars/releases/eprosima-fast-dds
 RUN cd ~ && mkdir eProsima && cd eProsima && wget https://www.eprosima.com/component/ars/item/eprosima_fast-dds-v2-6-linux-tgz && \
-    tar -xzvf eprosima_fast-dds-v2-6-linux-tgz && ./install.sh
+    tar -xzvf eprosima_fast-dds-v2-6-linux-tgz && ./install.sh --build-cores 12
 
 ##############################
 # Create group
