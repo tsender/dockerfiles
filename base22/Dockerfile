@@ -131,6 +131,12 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
 RUN cd ~ && mkdir eProsima && cd eProsima && wget https://www.eprosima.com/component/ars/item/eprosima_fast-dds-v2-6-linux-tgz && \
     tar -xzvf eprosima_fast-dds-v2-6-linux-tgz && ./install.sh --build-cores 12
 
+# Install gradle
+ARG GRADLE_VERSION=gradle-7.6.5
+RUN cd ~ && mkdir -p /opt/gradle && wget https://services.gradle.org/distributions/${GRADLE_VERSION}-bin.zip && unzip -d /opt/gradle ${GRADLE_VERSION}-bin.zip
+ENV GRADLE_HOME=/opt/gradle/${GRADLE_VERSION}
+ENV PATH=$GRADLE_HOME/bin:$PATH
+
 ##############################
 # Create group
 ##############################
